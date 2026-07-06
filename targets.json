@@ -1,0 +1,14 @@
+[
+  {
+    "name": "kakei_hinmoku_kingaku_2plus_monthly",
+    "statsDataId": "0003348231",
+    "enabled": true,
+    "note": "家計調査 家計収支編 二人以上の世帯 品目分類(2020年改定) 月次・支出金額と推定。初回に `meta 0003348231` で表題と品目分類を必ず確認すること。穀類(米/食パン/他のパン/麺類)と主食的調理食品を含むことを確認してから運用に入る。"
+  },
+  {
+    "name": "cpi_2020base_monthly",
+    "statsDataId": "0003427113",
+    "enabled": false,
+    "note": "2020年基準消費者物価指数（統計表IDはe-Stat公式ニュースで確認済: https://www.e-stat.go.jp/api/info-cat/news ）。全品目×全地域は行数が大きいため、初回に `meta 0003427113` で地域コード(全国)と品目コード(米類/パン/麺類等)を確認し、paramsで絞ってからenabledをtrueにする。例: \"params\": {\"cdArea\": \"<全国コード>\", \"cdCat01\": \"<品目コード,カンマ区切り>\"}"
+  }
+]
