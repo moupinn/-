@@ -1,0 +1,48 @@
+# e-Stat定点データの自動取得
+# - cronはUTC固定（GitHub Actionsの仕様）。下記はJSTの毎月10日/25日 朝6時に相当。
+#   実行は指定時刻ぴったりではなく10〜30分程度遅延しうる（月次統計用途では実害なし）。
+# - 家計調査(二人以上世帯・月次)の公表後に確実に拾えるよう月2回走らせる。
+#   公表スケジュール: https://www.stat.go.jp/data/kakei/ で確認。
+# - リポジトリが60日間無活動だとスケジュールは自動無効化されるが、
+#   本ワークフローは毎月データをコミットするため実質回避される。
+#   https://docs.github.com/en/actions/managing-workflow-runs/disabling-and-enabling-a-workflow
+name: fetch-estat
+
+on:
+  schedule:
+    - cron: "0 21 9 * *"   # JST 10日 06:00
+    - cron: "0 21 24 * *"  # JST 25日 06:00（取りこぼし・改定対応の保険）
+  workflow_dispatch: {}    # 手動実行（初回テストと臨時更新用）
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install --quiet requests pandas
+
+      - name: Fetch e-Stat data
+        env:
+          ESTAT_APP_ID: ${{ secrets.ESTAT_APP_ID }}
+        run: python scripts/fetch_estat.py fetch
+
+      - name: Commit updated data
+        run: |
+          git config user.name "estat-fetch-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/
+          if git diff --cached --quiet; then
+            echo "No data changes."
+          else
+            git commit -m "data: e-Stat update $(date -u +%Y-%m-%d)"
+            git push
+          fi
