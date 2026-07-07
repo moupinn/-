@@ -1,14 +1,50 @@
 [
   {
-    "name": "kakei_hinmoku_kingaku_2plus_monthly",
+    "name": "soutai_2020_quarterly",
     "statsDataId": "0003348231",
     "enabled": true,
-    "note": "家計調査 家計収支編 二人以上の世帯 品目分類(2020年改定) 月次・支出金額と推定。初回に `meta 0003348231` で表題と品目分類を必ず確認すること。穀類(米/食パン/他のパン/麺類)と主食的調理食品を含むことを確認してから運用に入る。"
+    "note": "総世帯・品目分類(2020年改定)・四半期・金額。内容は2000年Q1〜2024年Q4で凍結（旧分類）。旧name=kakei_hinmoku_kingaku_2plus_monthlyと同一表。"
   },
   {
-    "name": "cpi_2020base_monthly",
-    "statsDataId": "0003427113",
+    "name": "soutai_2025_quarterly",
+    "statsDataId": "0004023611",
+    "enabled": true,
+    "note": "総世帯・品目分類(2025年改定)・四半期・金額。現行・更新される表。遡及系列の有無を初回取得で確認する。"
+  },
+  {
+    "name": "futari_2020_monthly",
+    "statsDataId": "0003343671",
+    "enabled": true,
+    "note": "二人以上の世帯・品目分類(2020年改定)・月次・金額。履歴用（凍結見込み）。真の月次系列はこちら。"
+  },
+  {
+    "name": "futari_2025_monthly",
+    "statsDataId": "0004023601",
+    "enabled": true,
+    "note": "二人以上の世帯・品目分類(2025年改定)・月次・金額。現行・更新される表。"
+  },
+  {
+    "name": "tanshin_2020_quarterly",
+    "statsDataId": "0003348232",
+    "enabled": true,
+    "note": "単身世帯・品目分類(2020年改定)・四半期・金額。履歴用（凍結見込み）。年齢階級別品目分類は存在しない点に注意。"
+  },
+  {
+    "name": "tanshin_2025_quarterly",
+    "statsDataId": "0004023613",
+    "enabled": true,
+    "note": "単身世帯・品目分類(2025年改定)・四半期・金額。現行・更新される表。"
+  },
+  {
+    "name": "futari_2020_monthly_qty",
+    "statsDataId": "0003343670",
     "enabled": false,
-    "note": "2020年基準消費者物価指数（統計表IDはe-Stat公式ニュースで確認済: https://www.e-stat.go.jp/api/info-cat/news ）。全品目×全地域は行数が大きいため、初回に `meta 0003427113` で地域コード(全国)と品目コード(米類/パン/麺類等)を確認し、paramsで絞ってからenabledをtrueにする。例: \"params\": {\"cdArea\": \"<全国コード>\", \"cdCat01\": \"<品目コード,カンマ区切り>\"}"
+    "note": "二人以上・品目分類(2020年改定)・月次・数量。食パン等の数量分析（単価分解）が必要になったらenabledをtrueに。"
+  },
+  {
+    "name": "futari_2025_monthly_qty",
+    "statsDataId": "0004023602",
+    "enabled": false,
+    "note": "二人以上・品目分類(2025年改定)・月次・数量。同上。"
   }
 ]
