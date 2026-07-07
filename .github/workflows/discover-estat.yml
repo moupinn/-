@@ -1,0 +1,45 @@
+# 統計表IDの探索用ワークフロー（手動実行専用）
+# Actions → discover-estat → Run workflow で検索語を入れて実行すると、
+# data/discover_results.csv に候補一覧（statsDataId・表題・周期・更新日）が保存される。
+name: discover-estat
+
+on:
+  workflow_dispatch:
+    inputs:
+      search_word:
+        description: "検索語（例: 単身世帯 品目分類）"
+        required: true
+        default: "単身世帯 品目分類"
+
+permissions:
+  contents: write
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install --quiet requests pandas
+
+      - name: Discover tables
+        env:
+          ESTAT_APP_ID: ${{ secrets.ESTAT_APP_ID }}
+        run: python scripts/fetch_estat.py discover "${{ github.event.inputs.search_word }}" --stats-code 00200561
+
+      - name: Commit results
+        run: |
+          git config user.name "estat-fetch-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/discover_results.csv
+          if git diff --cached --quiet; then
+            echo "No changes."
+          else
+            git commit -m "discover: ${{ github.event.inputs.search_word }}"
+            git push
+          fi
